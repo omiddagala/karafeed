@@ -201,6 +201,9 @@ nav.ng-scope {
 .w-30 {
     width: 30%;
 }
+.w-33 {
+  width: 33% !important;
+}
 
 .w-70 {
     width: 70%;
