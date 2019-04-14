@@ -35,22 +35,12 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     };
     $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getCompanyEmployeeList", params, httpOptions)
       .success(function (data, status, headers, config) {
-        buildList(data);
+        $scope.colleagues = data;
         stopLoading();
       }).catch(function (err) {
       $rootScope.handleError(params, "/feedgram/employee/getCompanyEmployeeList", err, httpOptions);
     });
   };
-
-  function buildList(data){
-    for (var i=1;i <= data.length; i++){
-      $scope.colleagues[j].push(data[i - 1]);
-      if (i % 3 === 0){
-        j++;
-        $scope.colleagues[j] = [];
-      }
-    }
-  }
 
   $scope.follow = function(id){
     startLoading();
@@ -88,7 +78,9 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     };
     $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getFollowerList", params, httpOptions)
       .success(function (data, status, headers, config) {
-        buildList(data);
+        for (var i = 0; i < data.length; i++) {
+          $scope.colleagues.push(data[i].follower);
+        }
         stopLoading();
       }).catch(function (err) {
       $rootScope.handleError(params, "/feedgram/employee/getFollowerList", err, httpOptions);
@@ -113,7 +105,9 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     };
     $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getFollowingList", params, httpOptions)
       .success(function (data, status, headers, config) {
-        buildList(data);
+        for (var i = 0; i < data.length; i++) {
+          $scope.colleagues.push(data[i].following);
+        }
         stopLoading();
       }).catch(function (err) {
       $rootScope.handleError(params, "/feedgram/employee/getFollowingList", err, httpOptions);
