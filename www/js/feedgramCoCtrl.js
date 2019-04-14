@@ -14,11 +14,12 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
   var j = 0;
 
   setTimeout(function () {
-    $scope.getAllEmployees();
+    $scope.getAllEmployees('1');
   },700);
 
-  $scope.getAllEmployees = function(){
+  $scope.getAllEmployees = function(s){
     startLoading();
+    setSelectedTab(s);
     reset();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -60,8 +61,9 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     });
   };
 
-  $scope.getFollowers = function(){
+  $scope.getFollowers = function(s){
     startLoading();
+    setSelectedTab(s);
     reset();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -87,8 +89,9 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     });
   };
 
-  $scope.getFollowings = function(){
+  $scope.getFollowings = function(s){
     startLoading();
+    setSelectedTab(s);
     reset();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -119,6 +122,15 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     $scope.size = 12;
     $scope.colleagues = [[]];
     j = 0;
+  }
+
+  function setSelectedTab(selected) {
+    $(".tab-item").each(function () {
+      if ($(this).hasClass("active")) {
+        $(this).toggleClass("active");
+      }
+    });
+    $("#" + selected).toggleClass("active");
   }
 
   $scope.goToProfile = function () {
