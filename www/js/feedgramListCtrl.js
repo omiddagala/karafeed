@@ -4,7 +4,7 @@ try {
 } catch (err) {
   mymodule = angular.module("starter.controllers", []);
 }
-mymodule.controller('feedgramListCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, $state) {
+mymodule.controller('feedgramListCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, $location) {
   $rootScope.pageTitle = 'فیدگرام';
   $rootScope.currentMobileActiveMenu = "feedgram";
   $scope.page = 0;
@@ -34,8 +34,8 @@ mymodule.controller('feedgramListCtrl', function ($scope, $compile, $http, local
     });
   },700);
 
-  $scope.goToDetail = function () {
-    $state.go("feedgram-detail");
+  $scope.goToDetail = function (id) {
+    $location.path('/feedgram-detail').search({id: id});
   }
 
 });
