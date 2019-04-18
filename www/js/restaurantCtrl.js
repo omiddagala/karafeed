@@ -34,7 +34,7 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                     restaurantType: $location.search().resT ? $location.search().resT : "",
                     pageableDTO: {
                         page: $rootScope.resPageNum,
-                        size: 16,
+                        size: 8,//.........................................vs copy..........................
                         direction: 0,
                         sortBy: "name"
                     }
@@ -51,15 +51,16 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                     restaurantType: selectedTypes ? selectedTypes.join(",") : "",
                     pageableDTO: {
                         page: $rootScope.resPageNum,
-                        size: 16,
+                        size: 8,//.........................................vs copy..........................
                         direction: 0,
                         sortBy: "name"
                     }
                 };
-                if (isSearch) {
-                    $location.search('resN', params.value);
-                    $location.search('resT', params.restaurantType);
-                }
+                //.........................................vs copy..........................
+                // if (isSearch) {
+                //     $location.search('resN', params.value);
+                //     $location.search('resT', params.restaurantType);
+                // }
             }
             $http.post("https://demoapi.karafeed.com/pepper/v1/employee/findRestaurantByName", params, httpOptions)
                 .success(function (data, status, headers, config) {
@@ -94,9 +95,18 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
             setTimeout(function () {
                 $scope.rests = [];
                 $scope.loadContent(true, false);
-                $('.main-stage > div').scroll(function () {
-                    if ($rootScope.scrollIsAtEnd($('.main-stage > div'))) {
-                        if ($rootScope.resEnableScroll) {
+                //.........................................vs copy..........................
+                // $('.main-stage > div').scroll(function () {
+                //     if ($rootScope.scrollIsAtEnd($('.main-stage > div'))) {
+                //         if ($rootScope.resEnableScroll) {
+                //             $rootScope.resEnableScroll = false;
+                //             $scope.loadContent(false, false);
+                //         }
+                //     }
+                // });
+                $('.article-mobile-list').scroll(function () {
+                    if ($rootScope.scrollIsAtEnd($('.article-mobile-list'))) {
+                        if ($rootScope.resEnableScroll) {                            
                             $rootScope.resEnableScroll = false;
                             $scope.loadContent(false, false);
                         }

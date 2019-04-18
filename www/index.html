@@ -129,7 +129,7 @@
               </svg>
             </button>
           </ion-header-bar>
-          <ion-content ng-class="canRender() ? 'has-footer back-f4f4f4' : 'back-f4f4f4'">
+          <ion-content ng-class="canRender() ? 'has-footer back-f4f4f4 no-overflow-imp' : 'back-f4f4f4 no-overflow-imp'">
 
             <div ui-view class="view-padding-top"></div>
           </ion-content>
@@ -322,7 +322,7 @@ c-14 11 -68 36 -120 57 -52 20 -107 46 -122 58 -35 26 -36 67 -3 107 13 16 29
           </ion-header-bar>   -->
           <!--اگر header , footer دارد ion-content این کلاس هارا باید داشته باشد -->
           <!-- <ion-content class="has-footer has-wallet">-->
-          <ion-content>
+          <ion-content class="no-overflow-imp">
             <ion-list>
               <div>
                 <div class="card transparent-back w-100 mobile-card auto-height flex flex-col items-center

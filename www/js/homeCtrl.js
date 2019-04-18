@@ -4,7 +4,8 @@ try {
 } catch(err) {
   mymodule = angular.module("starter.controllers", []);
 }
-mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr, $location) {
+//.........................................vs copy..........................
+mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr, $location, $ionicScrollDelegate) {
     $rootScope.currentMobileActiveMenu = "home";
     var tomorrow;
     $rootScope.foodType = $scope.foodType = $location.search().t ? $location.search().t : 'ALL';
@@ -57,7 +58,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
           justOff: $location.search().jo === "true",
           pageableDTO: {
             page: $rootScope.empPageNum,
-            size: 16,
+            size: 8,//.........................................vs copy..........................
             direction: 0,
             sortBy: $location.search().so ? $location.search().so : 'low'
           }
@@ -91,22 +92,23 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
           justOff: off,
           pageableDTO: {
             page: $rootScope.empPageNum,
-            size: 16,
+            size: 8,
             direction: 0,
             sortBy: $rootScope.sortOrder
           }
         };
-        if (isSearch) {
-          $location.search('d', datetime);
-          $location.search('n', params.foodName);
-          $location.search('r', params.restaurantName);
-          $location.search('s', params.startPrice);
-          $location.search('e', params.endPrice);
-          $location.search('t', params.foodType);
-          $location.search('ti', time);
-          $location.search('so', $rootScope.sortOrder);
-          $location.search('jo', off.toString());
-        }
+        //................................................vs copy.................................
+        // if (isSearch) {
+        //   $location.search('d', datetime);
+        //   $location.search('n', params.foodName);
+        //   $location.search('r', params.restaurantName);
+        //   $location.search('s', params.startPrice);
+        //   $location.search('e', params.endPrice);
+        //   $location.search('t', params.foodType);
+        //   $location.search('ti', time);
+        //   $location.search('so', $rootScope.sortOrder);
+        //   $location.search('jo', off.toString());
+        // }
       }
       $http.post("https://demoapi.karafeed.com/pepper/v1/foodSearch/find", params, httpOptions)
         .success(function (data, status, headers, config) {
@@ -144,12 +146,20 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         initClock();
         $scope.loadContent(true, false);
         $scope.loadOrders();
-        $('.main-stage > div').scroll(function () {
-          if ($rootScope.scrollIsAtEnd($('.main-stage > div'))) {
-            if ($rootScope.enableScroll && $rootScope.isMainFood) {
-              $rootScope.enableScroll = false;
-              $scope.loadContent(false, true)
-            }
+        // $('.main-stage > div').scroll(function () {
+        //   if ($rootScope.scrollIsAtEnd($('.main-stage > div'))) {
+        //     if ($rootScope.enableScroll && $rootScope.isMainFood) {
+        //       $rootScope.enableScroll = false;
+        //       $scope.loadContent(false, true)
+        //     }
+        //   }
+        // });
+        $('.article-mobile-list').scroll(function () {
+          if ($rootScope.scrollIsAtEnd($('.article-mobile-list'))) {
+              if ($rootScope.enableScroll && $rootScope.isMainFood) {
+                  $rootScope.enableScroll = false;
+                  $scope.loadContent(false, true)
+              }
           }
         });
         checkMyGift();

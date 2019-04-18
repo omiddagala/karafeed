@@ -314,7 +314,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
     };
     $rootScope.$pageFinishedLoading = true;
   })
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider.state('home', {
       cache: false,
       url: '/home',
@@ -367,6 +367,13 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       templateUrl: '/views/feedgram/profile/profile.html'
     });
     $urlRouterProvider.otherwise("/home");
+
+    //.........................................vs copy..........................[start]
+    $ionicConfigProvider.views.forwardCache(true);
+    if (!ionic.Platform.isIOS()) {
+        $ionicConfigProvider.scrolling.jsScrolling(false);
+    }
+    //.........................................vs copy..........................[end]
   })
   .directive("fader", function ($timeout, $ionicGesture, $ionicSideMenuDelegate) {
     return {
