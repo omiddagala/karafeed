@@ -2052,9 +2052,19 @@ a:hover {
   text-decoration: unset !important;
 }
 
-.article-mobile-list{
+[ui-view] > div.scroll-class1 { /* وقتی در صفحه هم سرچ بار داریم و هم فوتر */
   overflow: auto;
-  max-height: calc(80vh - 72px);
+  max-height: calc(100vh - 184px);
+}
+[ui-view] > div.scroll-class2 { /* وقتی در صفحه نه سرچ بار داریم و نه فوتر */
+  overflow: auto;
+  max-height: calc(100vh - 5em);
+  margin-top: 0 !important;
+}
+[ui-view] > div.scroll-class3 { /* وقتی در صفحه سرچ بار نداریم ولی فوتر داریم */
+  overflow: auto;
+  max-height: calc(100vh - 116px);
+  margin-top: 0 !important;
 }
 label{
   direction: rtl;
