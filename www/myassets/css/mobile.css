@@ -25,6 +25,14 @@ html body {
   color: rgb(242, 69, 69) !important;
 }
 
+.mobile-menu-selected-text-f {
+  color: white !important;
+}
+
+.mobile-menu-unselected-text-f {
+  color: #939393 !important;
+}
+
 .ion-navicon {
   color: #808285 !important;
 }
@@ -134,8 +142,7 @@ div.pane {
 .reserve-item-count {
   width: 27px;
   height: 27px;
-  line-height: 27px;
-  text-align: center;
+  line-height: 2.2;
 }
 
 .mobile-food-name {
@@ -467,7 +474,8 @@ ion-list .card {
 }
 
 .category-page {
-  margin-top: -3.5em;
+  /* margin-top: -3.5em; */
+  padding-top: 20px;
 }
 
 .header-img {
