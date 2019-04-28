@@ -140,9 +140,9 @@ div.pane {
 }
 
 .reserve-item-count {
-  width: 27px;
-  height: 27px;
-  line-height: 2.2;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
 }
 
 .mobile-food-name {
@@ -202,6 +202,14 @@ div.pane {
 
 .color-9f9f9f {
   color: #9f9f9f !important;
+}
+
+.color-5d9baa {
+  color: #5d9baa !important;
+}
+
+.color-7c7c7c {
+  color: #7c7c7c !important;
 }
 
 .color-828282 {

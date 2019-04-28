@@ -672,6 +672,14 @@ nav.ng-scope {
   padding-bottom: 2em !important;
 }
 
+.bottom-padding-20 {
+  padding-bottom: 20px !important;
+}
+
+.bottom-margin-20 {
+  margin-bottom: 20px !important;
+}
+
 .top-padding-1 {
   padding-top: .25em !important;
 }
@@ -694,6 +702,10 @@ nav.ng-scope {
 
 .top-padding-6 {
   padding-top: 2em !important;
+}
+
+.top-padding-20 {
+  padding-top: 20px;
 }
 
 .right-padding-sm {
@@ -1182,6 +1194,14 @@ nav.ng-scope {
 
 .font-sm {
   font-size: small;
+}
+
+.font-xsm {
+  font-size: x-small;
+}
+
+.font-medium {
+  font-size: medium;
 }
 
 .font-xl {
