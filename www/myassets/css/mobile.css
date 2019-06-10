@@ -326,10 +326,6 @@ input[type=text] {
   padding-left: 12px !important;
 }
 
-body {
-  cursor: url('https://ionicframework.com/img/finger.png'), auto;
-}
-
 fader {
   /* position: absolute; */
   display: block;
@@ -617,6 +613,10 @@ body {
 .food-count-box {
   margin-right: auto;
   margin-left: 10px;
+}
+
+.hidden-sort-box {
+  display: none;
 }
 
 /* ionic [end] */

@@ -5,11 +5,10 @@ try {
   mymodule = angular.module("starter.controllers", []);
 }
 
-mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr,$ionicModal) {
+mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr, $ionicModal) {
   $rootScope.pageTitle = 'رزروها';
   $scope.reserves = {};
   $rootScope.currentMobileActiveMenu = "reserve";
-  $scope.mydays = [];
   $ionicModal.fromTemplateUrl('app/pages/employee/reserve/dda-modal.html', {
     scope: $scope,
     animation: 'slide-in-up',
@@ -17,12 +16,6 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     $scope.ddaModal = modal;
   });
   $scope.orderList = function () {
-
-    var t = $('#taghvim').text();
-    moment.locale('fa');
-    moment.loadPersian({dialect: 'persian-modern'});
-    var time = $("#searchTime").text();
-    $rootScope.day = moment.utc(t + " " + time, 'jYYYY/jM/jD HH:mm');
     startLoading();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -36,7 +29,8 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
         "sortBy": "deliveryDate"
       }
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/getOrderList", params, httpOptions).success(function (data, status, headers, config) {
+    $http.post("http://127.0.0.1:9000/v1/employee/getOrderList", params, httpOptions).success(function (data, status, headers, config) {
+      data = data.list;
       var map = new HashMap();
       for (var i = 0; i < data.length; i++) {
         var existVal = map.get(data[i].deliveryDate);
@@ -134,7 +128,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     return desc.length <= 250;
   };
 
-  $scope.orderFood = function (foodId, date) {// change this
+  $scope.orderFood = function (order, date) {// change this
     startLoading();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -142,12 +136,14 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     };
     var params = {
       date: date,
-      foodId: foodId
+      foodId: order.food.id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/order", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/order", params, httpOptions)
       .success(function (data, status, headers, config) {
         $rootScope.userBalance = data.availableBalanceAmount;
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
+        order.count++;
+        $scope.orderList();
         stopLoading();
       }).catch(function (err) {
       setTimeout(function () {
@@ -156,24 +152,10 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
       $rootScope.handleError(params, "/employee/order", err, httpOptions);
     });
   };
-  $scope.productPlus = function ($event, isNotPlusButton) {
-    var product = $($event.currentTarget).closest('.mobile-card');
-    // just if action is from plus button
-    if (!isNotPlusButton) {
-      var foodid = product.find("#foodID").text();
-      var orderdate = product.data("orderdate");
-      var foodname = product.data("foodname");
-      var resid = product.data("resid");
-      var foodtype = product.data("foodtype");
-      var restname = product.data("restname");
-      $scope.addToTodayReserves(foodname, moment.utc(orderdate), foodid, resid, foodtype, restname);
-      $scope.orderFood(foodid, orderdate);
-    }
-    var q = product.data('quantity') + 1;
-    product.data('quantity', q);
-    $scope.updateProduct(product);
+  $scope.productPlus = function (order, orderDate) {
+    $scope.orderFood(order, orderDate);
   };
-  $scope.cancelFood = function (foodId, date) {//change this
+  $scope.cancelFood = function (order, date) {//change this
     startLoading();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -181,12 +163,14 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     };
     var params = {
       date: date,
-      foodId: foodId
+      foodId: order.food.id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/cancelOrderByOrderDTO", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/cancelOrderByOrderDTO", params, httpOptions)
       .success(function (data, status, headers, config) {
         $rootScope.userBalance = data.availableBalanceAmount;
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
+        order.count--;
+        $scope.orderList();
         stopLoading();
       }).catch(function (err) {
       $rootScope.handleError(params, "/employee/cancelOrderByOrderDTO", err, httpOptions);
@@ -194,7 +178,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     });
   };
 
-  $scope.cancelAllFood = function (foodId, localId, date) {//change this
+  $scope.cancelAllFood = function (order, date) {//change this
     startLoading();
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
@@ -202,81 +186,50 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     };
     var params = {
       date: date,
-      foodId: foodId
+      foodId: order.food.id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/cancelOrderByOrderDTOList", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/cancelOrderByOrderDTOList", params, httpOptions)
       .success(function (data, status, headers, config) {
         stopLoading();
         $rootScope.userBalance = data.availableBalanceAmount;
-        // $scope.loadOrders();
+        $scope.orderList();
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
       }).catch(function (err) {
       $rootScope.handleError(params, "/employee/cancelOrderByOrderDTOList", err, httpOptions);
       // $scope.loadOrders();
     });
   };
-  $scope.productDel = function ($event) {
-    var product = $($event.currentTarget).closest('.mobile-card');
-    $scope.cancelAllFood(product.find("#foodID").text(), product.attr("id"), product.data("orderdate"));
-    product.hide('blind', {direction: 'left'}, 500, function () {
-      product.remove();
-      if ($('.product').length == 0) {
-        $('.cart-container .cart').hide();
-        $('.cart-container .empty').show();
-      }
-    });
-  };
 
-  $scope.productMinus = function ($event) {
-    var product = $($event.currentTarget).closest('.mobile-card');
-    var pq = product.data('quantity');
-    $scope.removeFromTodayReserves(moment.utc($rootScope.day), product.find("#foodID").text());
-    if ($scope.num === 0 || pq === 1) {
-      $scope.productDel($event);
+  $scope.productMinus = function (order, orderDate) {
+    if (order.count === 1) {
+      $scope.cancelAllFood(order, orderDate);
     } else {
-      $scope.cancelFood(product.find("#foodID").text(), $rootScope.day);
-      var q = Math.max(1, pq - 1);
-      product.data('quantity', q);
-      $scope.updateProduct(product);
+      $scope.cancelFood(order, orderDate);
     }
   };
-  $scope.removeFromTodayReserves = function (day, id) {
-    var todaysKey = moment.utc(day).format("MM-DD-YYYY");
-    var elem = $rootScope.reservesPerDay.get(todaysKey);
-    if (elem) {
-      for (var i = 0; i < elem.length; i++) {
-        if (elem[i].id === id) {
-          elem.splice(i, 1);
-          return;
-        }
-      }
-    }
-  }
-  $scope.updateProduct = function (product) {
-    var quantity = product.data('quantity');
-    $('.product-quantity', product).text(quantity);
-  };
 
-
-  $scope.dessert = function (resId, date) {
+  $scope.dessert = function (res) {
     startLoading();
+    $scope.selectedRes = res;
+    $scope.selectedDate = res.deliveryDate;
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      "date": date,
+      "date": res.deliveryDate,
       "pageableDTO": {
         "direction": "ASC",
         "page": 0,
         "size": 1000,
         "sortBy": "id"
       },
-      "restaurantId": resId
+      "restaurantId": res.restaurant.id
     };
     $http.post("http://127.0.0.1:9000/v1/foodSearch/getRestaurantDDA", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.ddas = data;
+        $scope.setCountOfDDA(data);
         $scope.ddaModal.show();
         stopLoading();
       }).catch(function (err) {
@@ -284,32 +237,32 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     });
   };
 
-  $scope.cancelDessert = function () {
-    $rootScope.isMainFood = true;
-    $rootScope.empPageNum = 0;
-    var t = $('#taghvim').find('input').val();
-    $("#dateForOrder").val(t);
-    $scope.loadContent(false, true)
-  };
-
-  $scope.addToTodayReserves = function (name, day, id, resId, foodType, restName) {
-    var todaysKey = moment.utc(day).format("MM-DD-YYYY");
-    var todays = {
-      name: name,
-      day: day,
-      id: id,
-      resId: resId,
-      foodType: foodType,
-      restName: restName,
-      addedLocally: false
-    };
-    var elem = $rootScope.reservesPerDay.get(todaysKey);
-    if (!elem) {
-      $rootScope.reservesPerDay.set(todaysKey, [todays]);
-    } else {
-      elem.push(todays);
+  $scope.setCountOfDDA = function (DDAs) {
+    for (var i = 0; i < $scope.selectedRes.foodOrders.length; i++) {
+      for (var j = 0; j < DDAs.length; j++) {
+        if ($scope.selectedRes.foodOrders[i].food.id === DDAs[j].id) {
+          DDAs[j].count = $scope.selectedRes.foodOrders[i].count;
+        } else {
+          DDAs[j].count = 0;
+        }
+      }
     }
   };
+
+  $scope.orderDessert = function (food) {
+    food.food = {
+      id: food.id
+    };
+    $scope.orderFood(food, $scope.selectedDate);
+  };
+
+  $scope.cancelDessert = function (food) {
+    food.food = {
+      id: food.id
+    };
+    $scope.cancelFood(food, $scope.selectedDate);
+  };
+
   $scope.addFoodDesc = function (id, index) {
     var desc = $("#orderDesc_" + index).val();
     startLoading();
@@ -321,7 +274,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
       id: id,
       comment: desc
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/addOrderDescription", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/addOrderDescription", params, httpOptions)
       .success(function (data, status, headers, config) {
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();
@@ -336,7 +289,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
     setTimeout(function () {
       thisTab.toggleClass("top-padding-20").toggleClass("bottom-padding-20").toggleClass("back-e2eded").toggleClass("box-shadow-reserve-title");
       tabArrow.toggleClass("rotate");
-    },500);
+    }, 500);
     thisTab.next().slideToggle(500);
 
   };
@@ -345,7 +298,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
   };
 
   $scope.showSubmit = function (e) {
-    $(e.currentTarget).closest('form').find('button[type="submit"]').removeClass("hidden-btn");
+    $(e.currentTarget).closest('form').find('button[type="submit"]').show();
     $(e.currentTarget).addClass('comment-box-focused');
   }
 });

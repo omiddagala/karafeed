@@ -7,34 +7,43 @@ try {
 
 mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr) {
   $rootScope.pageTitle = 'جزئیات غذا';
-  // console.log($rootScope.mobileFoodDetail);
   $('.hidden-tab').hide();
-  if (!$rootScope.mobileFoodDetail) {
-    window.location.assign('/#category');
-    //     var home = window.location.href.replace("detail", "home");
-    //     home = replaceUrlParam(home, "r", name);
-    //     window.location.href = home;
-    //     $rootScope.currentActiveMenu = "home";
-    //     return;
-  }
-  $scope.loadYourLastRateToThisFood = function () {
 
+  $scope.initCtrl = function () {
+    setTimeout(function () {
+      var token = localStorageService.get("my_access_token");
+      var httpOptions = {
+        headers: {'Content-type': 'text/plain; charset=utf-8', 'Authorization': 'Bearer ' + token}
+      };
+      $http.post("http://127.0.0.1:9000/v1/foodSearch/findOne", $location.search().id, httpOptions)
+        .success(function (data, status, headers, config) {
+          stopLoading();
+          $scope.mobileFoodDetail = data;
+          $scope.dateToShowOnCards = $location.search().d;
+          $scope.timeToShowOnCards = $location.search().t;
+        }).catch(function (err) {
+        $rootScope.handleError($location.search().id, "foodSearch/findOne", err, httpOptions);
+      });
+      $scope.loadYourLastRateToThisFood();
+      $scope.foodDetail();
+    }, 700)
+  };
+
+  $scope.loadYourLastRateToThisFood = function () {
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $rootScope.mobileFoodDetail.id
+      id: $location.search().id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/lastRate", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/lastRate", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.foodRate = data.rate === 0 ? "-" : data.rate;
         $scope.updateStar(data.rate);
       }).catch(function (err) {
       $rootScope.handleError(params, "/employee/lastRate", err, httpOptions);
     });
-
-
   };
 
   $scope.myRate = function (rate) {
@@ -45,10 +54,10 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      "foodId": $rootScope.mobileFoodDetail.id,
+      "foodId": $location.search().id,
       "rate": rate
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/rate", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/rate", params, httpOptions)
       .success(function (data, status, headers, config) {
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();
@@ -83,9 +92,9 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $rootScope.mobileFoodDetail.id
+      id: $location.search().id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/food/getFoodAvailableDates", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/food/getFoodAvailableDates", params, httpOptions)
       .success(function (data, status, headers, config) {
         var m = new HashMap();
         for (var i = 0; i < data.length; i++) {
@@ -101,10 +110,6 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       $rootScope.handleError(params, "/food/getFoodAvailableDates", err, httpOptions);
     });
   };
-  if ($rootScope.mobileFoodDetail && $rootScope.mobileFoodDetail.id) {
-    $scope.loadYourLastRateToThisFood();
-    $scope.foodDetail();
-  }
   $scope.formatMyTime = function (d) {
     var rt;
     switch (d.toString().length) {
@@ -143,10 +148,10 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      foodId: $rootScope.mobileFoodDetail.id,
+      foodId: $location.search().id,
       comment: $('#commentInDetail').val()
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/foodComment/add", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/foodComment/add", params, httpOptions)
       .success(function (data, status, headers, config) {
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();
@@ -168,7 +173,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $rootScope.mobileFoodDetail.id,
+      id: $location.search().id,
       pageableDTO: {
         page: $scope.commentPageNum,
         size: 10,
@@ -176,7 +181,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
         sortBy: "date"
       }
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/foodComment/getFoodComments", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/foodComment/getFoodComments", params, httpOptions)
       .success(function (data, status, headers, config) {
         if (data.length > 0) {
           Array.prototype.push.apply($scope.comments, data);
@@ -207,9 +212,9 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $rootScope.mobileFoodDetail.id
+      id: $location.search().id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/lastRate", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/lastRate", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.foodRate = data.rate === 0 ? "-" : data.rate;
         $scope.updateStar(data.rate);
@@ -225,9 +230,9 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
     };
     var params = {
       date: $rootScope.dateToOrder.format('YYYY-MM-DDTHH:mmZ'),
-      foodId: $rootScope.mobileFoodDetail.id
+      foodId: $location.search().id
     };
-    $http.post("https://demoapi.karafeed.com/pepper/v1/employee/order", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/employee/order", params, httpOptions)
       .success(function (data, status, headers, config) {
         $rootScope.userBalance = data.availableBalanceAmount;
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");

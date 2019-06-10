@@ -791,6 +791,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
       $scope.loadContent(false, true);
     };
     $scope.confirm = function (e) {
+      $rootScope.hideBackButton = false;
       var ionSideMenu = $(e.currentTarget).closest('ion-side-menus');
       $(ionSideMenu).find('ion-side-menu .confirm-box').removeClass('confirm-box-disable');
       window.setTimeout(function () {
@@ -1012,8 +1013,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
       }, 280);
     };
     $scope.showFoodDetail = function (food) {
-      $rootScope.mobileFoodDetail = food;
-      $location.path('/food-detail');
+      $location.path('/emp-mobile-detail').search({id:food.id, d: $rootScope.dateToShowOnCards, t: $rootScope.timeToShowOnCards});
     };
     $scope.cardsBottomOrderFoodAction = function ($event, food) {
       $scope.orderFood(food.id, $rootScope.dateToOrder.format('YYYY-MM-DDTHH:mmZ'));
