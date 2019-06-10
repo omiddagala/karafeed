@@ -14,9 +14,8 @@
         .state('profile', {
           url: '/profile',
           title: 'Profile',
-          templateUrl: window.isMobile() ? 'app/pages/employee/profile/m.profile.html' : 'app/pages/employee/profile/profile.html'
+          templateUrl: 'app/pages/employee/profile/m.profile.html'
         });
   }
 
 })();
-  
