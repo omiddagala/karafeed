@@ -295,8 +295,6 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
 
     //// for ionic nav
     $rootScope.canRender = function (item) {
-      if ($rootScope.hideBackButton)
-        return false;
       if (window.location.hash === "#/profile" && (!item || item === 'search-bar')) {
         return false;
       } else if ((window.location.hash === "#/category" || window.location.hash === "#/detail" || window.location.hash === "#/reserve") && item === 'search-bar') {
@@ -461,7 +459,6 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
           $(ionSideMenu).find('ion-content [ui-view] .article-mobile-list').addClass('article-mobile-list-sort-visable');
           $(ionSideMenu).find('ion-content').addClass('content-sort-visible');
           $(ionSideMenu).find('ion-footer-bar').addClass('footer-sort-visible');
-          $rootScope.hideBackButton = true;
         } else {
           thisItem.closest('.search-bar-box').show(200);
           $(thisItem).find('path').removeClass('mobile-menu-selected');
