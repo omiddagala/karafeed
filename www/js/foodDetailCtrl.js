@@ -238,9 +238,6 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();
       }).catch(function (err) {
-      setTimeout(function () {
-        $scope.loadOrders();
-      }, 2000);
       $rootScope.handleError(params, "/employee/order", err, httpOptions);
     });
   };
