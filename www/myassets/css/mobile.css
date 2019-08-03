@@ -1,16 +1,16 @@
+* {
+  font-family: IRANSans, serif !important;
+}
 *[ui-view] {
   width: 100% !important;
   background-color: #f4f4f4;
 }
-
-.padding-44 {
+.padding-44{
   padding-top: 44px;
 }
-
-.padding-9em {
+.padding-9em{
   padding-top: 9em;
 }
-
 html body {
   margin-right: 0 !important;
 }
@@ -46,7 +46,8 @@ html body {
   background-image: none !important;
   border: none !important;
   height: fit-content !important;
-  justify-content: space-evenly !important
+  -webkit-box-pack:space-evenly !important;
+  justify-content: space-evenly !important;
 }
 
 div.pane {
@@ -59,6 +60,7 @@ div.pane {
 /* login */
 
 .m-login-content {
+  -webkit-transform: translateY(10%);
   transform: translateY(10%);
   margin-bottom: 2em;
 }
@@ -83,16 +85,16 @@ div.pane {
 .mobil-card-rate,
 .mobil-card-info {
   position: absolute;
-  width: 29px;
+  width: 19px;
   height: 19px;
-  object-fit: contain;
+  /* object-fit: contain; */
   border-radius: 3px;
-  background-color: #f44545;
+  /* background-color: #f44545; */
   z-index: 1;
   color: white;
   text-align: center;
   line-height: 22px;
-  top: -10px;
+  top: 0px;
   right: 5%;
 }
 
@@ -111,6 +113,12 @@ div.pane {
 .mobil-card-img {
   min-width: 40%;
   max-width: 40%;
+  overflow: hidden;
+  height: 133px;
+  border-radius: .8em;
+}
+.mobile-card-content {
+  margin-left: calc(-.5em - 19px);
 }
 
 .mobile-card {
@@ -121,6 +129,15 @@ div.pane {
 
 .card-img {
   border-radius: .8em;
+}
+
+.mobil-card-img .card-img {
+  height: 100%;
+  width: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .card__restaurant__star {
@@ -284,44 +301,40 @@ div.pane {
   .flex-col-xs {
     flex-direction: row !important;
   }
-
   .self-baseline-xs {
     align-self: center !important;
   }
 }
 
-@media (max-width: 450px) {
-  .card > div {
+@media (max-width: 300px) {
+  .card>div {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
   }
-
   .card {
     flex-wrap: wrap;
     padding-left: 1em !important;
   }
-
   .profile-pag .card {
     padding-left: 0 !important;
   }
-
   .mobil-card-info {
     left: 1.5em;
   }
-
   .col-xs-6 {
     width: 100% !important;
     max-width: 100% !important;
   }
-
   .card-img {
     border-radius: .4em;
   }
 }
 
 /* ionic [start] */
-
+.tab-item {
+  opacity: 1 !important;
+}
 input[type=text] {
   padding-left: 12px !important;
 }
@@ -371,11 +384,9 @@ ion-wallet-select wallet-content .item:first-child {
 ion-wallet-select wallet-content .item:last-child {
   margin-bottom: 64px;
 }
-
-.is__off_white {
+.is__off_white{
   text-decoration-color: inherit !important;
 }
-
 .premium-bar {
   transition: all .5s;
 }
@@ -400,6 +411,9 @@ ion-wallet-select wallet-content .item:last-child {
 
 .bar-footer {
   z-index: 150;
+  height: 62px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .bar .title {
@@ -409,7 +423,7 @@ ion-wallet-select wallet-content .item:last-child {
 
 .menu-content {
   width: 50% !important;
-  max-width: 350px !important;
+  max-width: 270px !important;
 }
 
 ion-list .card {
@@ -448,6 +462,7 @@ ion-list .card {
 .article-mobile-list-sort-visable {
   display: none;
 }
+
 
 .ADMdtpInput,
 .ADMdtp {
@@ -546,8 +561,10 @@ ion-list .card {
 .detail-page ul.rating {
   text-align: center;
   display: flex;
+  -webkit-box-pack:center;
   justify-content: center;
 }
+
 
 .tab-arrow {
   transition: .6s;
@@ -588,29 +605,25 @@ ion-list .card {
   z-index: 9999;
 }
 
-.ui-select-multiple.ui-select-bootstrap > div {
+.ui-select-multiple.ui-select-bootstrap>div {
   display: flex;
   flex-wrap: wrap;
 }
 
-.ui-select-multiple.ui-select-bootstrap > div span {
+.ui-select-multiple.ui-select-bootstrap>div span {
   color: white !important;
 }
-
-.sort-btn {
+.sort-btn{
   width: 50px;
   height: 31px;;
 }
-
-.search-btn:hover {
+.search-btn:hover{
   transform: unset !important;
 }
-
-body {
+body{
   font-size: 12px !important;
 }
-
-.food-count-box {
+.food-count-box{
   margin-right: auto;
   margin-left: 10px;
 }
@@ -618,5 +631,10 @@ body {
 .hidden-sort-box {
   display: none;
 }
-
 /* ionic [end] */
+/* captcha...[start]*/
+div#captcha_container {
+  height: 86px;
+  overflow: auto;
+}
+/* captcha...[end]*/

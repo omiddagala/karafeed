@@ -26,7 +26,7 @@ mymodule.controller('loginCtrl', function ($scope, $http, localStorageService, $
       showMessage(toastrConfig, toastr, "خطا", "لطفا در فیلد نام کاربری از کاراکترهای مجاز استفاده کنید", "error");
       return;
     }
-    $http.post("https://demoapi.karafeed.com/security/oauth/token", jQuery.param(params), httpOptions)
+    $http.post("http://127.0.0.1:9000/oauth/token", jQuery.param(params), httpOptions)
       .success(function (data, status, headers, config) {
         stopLoading();
         var jwt = parseJwt(data.access_token);
@@ -44,7 +44,7 @@ mymodule.controller('loginCtrl', function ($scope, $http, localStorageService, $
         showMessage(toastrConfig, toastr, "خطا", "نام کاربری یا رمز عبور اشتباه می باشد", "error");
         return;
       }
-      $rootScope.handleError(params, "/security/oauth/token", err, httpOptions);
+      $rootScope.handleError(params, "/oauth/token", err, httpOptions);
     });
   };
 

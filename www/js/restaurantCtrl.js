@@ -129,6 +129,14 @@ mymodule.controller('restaurantCtrl', function ($scope, $compile, $http, localSt
     $rootScope.currentMobileActiveMenu = "home";
   };
 
+  var delayTimer;
+  $scope.textSearch = function () {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(function () {
+      $scope.loadContent(false, true);
+    }, 700);
+  };
+
   $scope.confirm = function (e) {
     var ionSideMenu = $(e.currentTarget).closest('ion-side-menus');
     $(ionSideMenu).find('ion-side-menu .confirm-box').removeClass('confirm-box-disable');

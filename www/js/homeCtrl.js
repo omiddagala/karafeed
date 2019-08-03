@@ -43,7 +43,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         justOff: $location.search().jo === "true",
         pageableDTO: {
           page: $rootScope.empPageNum,
-          size: $rootScope.isMobile() ? 8 : 16,
+          size: 8,
           direction: 0,
           sortBy: $location.search().so ? $location.search().so : 'low'
         }
@@ -55,13 +55,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         $('#foodName').val(params.foodName);
         $('#resName_selected_title').text(!params.restaurantName ? "همه" : params.restaurantName);
         $rootScope.resNameToSearch = params.restaurantName;
-        if (!$rootScope.isMobile()) {
-          var slider = $("#range").data("ionRangeSlider");
-          slider.update({
-            from: params.startPrice,
-            to: params.endPrice
-          });
-        }
+
 
         $scope.foodType = $rootScope.foodType = params.foodType ? params.foodType : 'ALL';
         $rootScope.sortOrder = params.pageableDTO.sortBy;
@@ -75,7 +69,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
       var date = moment.utc(datetime + " " + time, 'jYYYY/jM/jD HH:mm').format('YYYY-MM-DDTHH:mmZ');
       day = moment.utc(datetime, 'jYYYY/jM/jD').day();
       var off = $('input[name="justOff"]:checked').length > 0;
-      var foodtype = window.isMobile() ? $rootScope.selectedCategory : ($rootScope.foodType === 'ALL' ? null : $rootScope.foodType);
+      var foodtype = $rootScope.selectedCategory;
       params = {
         date: date,
         foodName: $('#foodName').val(),
@@ -86,22 +80,11 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         justOff: off,
         pageableDTO: {
           page: $rootScope.empPageNum,
-          size: $rootScope.isMobile() ? 8 : 16,
+          size: 8,
           direction: 0,
           sortBy: $rootScope.sortOrder
         }
       };
-      if (isSearch && !$rootScope.isMobile()) {
-        $location.search('d', datetime);
-        $location.search('n', params.foodName);
-        $location.search('r', params.restaurantName);
-        $location.search('s', params.startPrice);
-        $location.search('e', params.endPrice);
-        $location.search('t', params.foodType);
-        $location.search('ti', time);
-        $location.search('so', $rootScope.sortOrder);
-        $location.search('jo', off.toString());
-      }
     }
     $http.post("http://127.0.0.1:9000/v1/foodSearch/find", params, httpOptions)
       .success(function (data, status, headers, config) {
@@ -335,6 +318,14 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
       $rootScope.empPageNum = 0;
       $scope.loadContent(false, true);
     }, 600);
+  };
+
+  var delayTimer;
+  $scope.textSearch = function () {
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(function () {
+      $scope.loadContent(false, true);
+    }, 700);
   };
 
   $scope.myFormatDate = function (d) {

@@ -26843,7 +26843,7 @@ var $parseMinErr = minErr('$parse');
 // Similarly we prevent invocations of function known to be dangerous, as well as assignments to
 // native objects.
 //
-// See https://docs.angularjs.org/guide/security
+// See https://docs.angularjs.org/guide
 
 
 function ensureSafeMemberName(name, fullExpression) {
@@ -37924,7 +37924,7 @@ var ngControllerDirective = [function() {
  * @description
  *
  * Angular has some features that can break certain
- * [CSP (Content Security Policy)](https://developer.mozilla.org/en/Security/CSP) rules.
+ * [CSP (Content Security Policy)](https://developer.mozilla.org/en/CSP) rules.
  *
  * If you intend to implement these rules then you must tell Angular not to use these features.
  *

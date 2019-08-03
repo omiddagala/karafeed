@@ -36,11 +36,11 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
 
     $rootScope.loadBalanceByRole = function () {
       if (jQuery.inArray("EMPLOYEE", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://demoapi.karafeed.com/pepper/v1/employee/getBalance", true);
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/employee/getBalance", true);
       } else if (jQuery.inArray("COMPANY", $rootScope.roles) > -1 || jQuery.inArray("SILVER_COMPANY", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://demoapi.karafeed.com/pepper/v1/company/getBalance");
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/company/getBalance");
       } else if (jQuery.inArray("RESTAURANT", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://demoapi.karafeed.com/pepper/v1/restaurant/getLoginRestaurantBalance");
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/restaurant/getLoginRestaurantBalance");
       } else {
         $rootScope.userBalance = 0;
       }
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       var httpOptions = {
         headers: { 'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token }
       };
-      $http.post("https://demoapi.karafeed.com/pepper/v1/general/getProfileImage", null, httpOptions)
+      $http.post("http://127.0.0.1:9000/v1/general/getProfileImage", null, httpOptions)
         .then(function (data, status, headers, config) {
           $rootScope.myProfilePic = data.data;
           // console.log(data);
@@ -136,7 +136,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
         "size": 5,
         "sortBy": "date"
       };
-      $http.post("https://demoapi.karafeed.com/pepper/v1/message/getNewMessages", param, httpOptions)
+      $http.post("http://127.0.0.1:9000/v1/message/getNewMessages", param, httpOptions)
         .then(function (data, status, headers, config) {
           stopLoading();
           $rootScope.notifications = data.data;
@@ -188,7 +188,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
           serviceAddress: url,
           exceptionMessage: err.data.message.toString().length >= 255 ? err.data.message.toString().substring(0, 255) : err.data.message.toString()
         };
-        $http.post("https://demoapi.karafeed.com/pepper/v1/log/insert", p, h)
+        $http.post("http://127.0.0.1:9000/v1/log/insert", p, h)
           .then(function (data, status, headers, config) {
           }).catch(function (err) {
         });
@@ -301,6 +301,10 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
         return false;
       } else if (window.location.hash === "#/home" && item === 'sort-btn') {
         return false;
+      } else if (window.location.hash == "#/home" && item == 'close-search-btn') {
+        return true;
+      } else if (window.location.hash != "#/home" && item == 'close-search-btn') {
+        return false;
       } else if (window.location.hash === "#/profile" && (item === 'header' || item === 'fader' || item === 'menu')) {
         return true;
       } else if (window.location.hash === "#/login") {
@@ -313,6 +317,16 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       return $rootScope.currentMobileActiveMenu && $rootScope.currentMobileActiveMenu.includes("feedgram");
     };
     $rootScope.$pageFinishedLoading = true;
+
+    $ionicPlatform.onHardwareBackButton(function() {
+      if ($rootScope.sortBoxIsShown) {
+        $rootScope.sortBox();
+      } else if (window.location.hash === "#/emp-mobile-home") {
+        navigator.app.exitApp();
+      } else {
+        navigator.app.backHistory();
+      }
+    });
   })
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     $stateProvider.state('home', {
@@ -450,6 +464,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
         var thisItem = $('.sort-btn');
         var ionSideMenu = $(thisItem).closest('ion-side-menu');
         if ($(ionSideMenu).find('[ui-view] .sort-box').hasClass('hidden-sort-box')) {
+          $rootScope.sortBoxIsShown = true;
           thisItem.closest('.search-bar-box').hide();
           $(thisItem).find('path').addClass('mobile-menu-selected');
           $rootScope.title = $rootScope.pageTitle;
@@ -459,16 +474,23 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
           $(ionSideMenu).find('ion-content [ui-view] .article-mobile-list').addClass('article-mobile-list-sort-visable');
           $(ionSideMenu).find('ion-content').addClass('content-sort-visible');
           $(ionSideMenu).find('ion-footer-bar').addClass('footer-sort-visible');
+          $('.close-search').removeClass('hidden');
+          $('#back-button').addClass('footer-sort-visible');
+          $('#close-search').removeClass('footer-sort-visible');
         } else {
+          $rootScope.sortBoxIsShown = false;
           thisItem.closest('.search-bar-box').show(200);
           $(thisItem).find('path').removeClass('mobile-menu-selected');
           $rootScope.pageTitle = $rootScope.title;
           $(ionSideMenu).find('[ui-view] .sort-box').addClass('hidden-sort-box').removeClass('left-0-imp');
+          $('.close-search').addClass('hidden');
           window.setTimeout(function () {
             $(ionSideMenu).find('ion-content [ui-view]').removeClass('ui-view-sort-visable');
             $(ionSideMenu).find('ion-content [ui-view] .article-mobile-list').removeClass('article-mobile-list-sort-visable');
             $(ionSideMenu).find('ion-content').removeClass('content-sort-visible');
             $(ionSideMenu).find('ion-footer-bar').removeClass('footer-sort-visible');
+            $('#back-button').removeClass('footer-sort-visible');
+            $('#close-search').addClass('footer-sort-visible');
           }, 50);
         }
       }

@@ -80,6 +80,10 @@ label.control-label {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 
+.box-shadow-reserve-title {
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+
 .newmodal_body_content {
   margin-top: 50px;
   padding-right: 30px;
@@ -197,10 +201,6 @@ nav.ng-scope {
 
 .w-30 {
   width: 30%;
-}
-
-.w-33 {
-  width: 33% !important;
 }
 
 .w-70 {
@@ -1392,7 +1392,7 @@ nav.ng-scope {
 }
 
 .hidden-btn {
-  display: none !important;
+  display: none;
 }
 
 .no-redius {
@@ -1549,6 +1549,10 @@ nav.ng-scope {
 
 .w-30 {
   width: 30% !important;
+}
+
+.w-33 {
+  width: 33% !important;
 }
 
 .w-35 {
@@ -1894,6 +1898,10 @@ ba-sidebar.expanded .al-sidebar, .al-sidebar.sabad__.expanded, .al-sidebar.sabad
   color: black;
 }
 
+.pink-color {
+  color: #dc3698;
+}
+
 .black-color-imp {
   color: black !important;
 }
@@ -2072,6 +2080,10 @@ a:hover {
   text-decoration: unset !important;
 }
 
+/* .article-mobile-list {
+    overflow: auto;
+    max-height: calc(80vh - 72px);
+} */
 [ui-view] > div.scroll-class1 { /* وقتی در صفحه هم سرچ بار داریم و هم فوتر */
   overflow: auto;
   max-height: calc(100vh - 184px);
@@ -2086,24 +2098,7 @@ a:hover {
   max-height: calc(100vh - 116px);
   margin-top: 0 !important;
 }
-label{
+
+label {
   direction: rtl;
-}
-
-hr {
-  height: 2px !important;
-  background-color: #999;
-  width: 95%;
-  margin-top: unset !important;
-  margin-bottom: unset !important;
-  border-top: unset !important;
-}
-
-.item {
-  border-width: 0 !important;
-  margin: unset;
-}
-
-.card {
-  animation: intro forwards !important;
 }
