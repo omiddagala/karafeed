@@ -349,6 +349,11 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       url: '/restaurant',
       controller: 'restaurantCtrl',
       templateUrl: '/views/employee/restaurant/restaurant.html'
+    }).state('profile', {
+      cache: false,
+      url: '/profile',
+      controller: 'profileCtrl',
+      templateUrl: '/views/employee/profile/profile.html'
     }).state('reserve', {
       cache: false,
       url: '/reserve',
