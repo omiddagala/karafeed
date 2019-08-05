@@ -23,7 +23,7 @@ mymodule.controller('feedgramDetailCtrl', function ($scope, $compile, $http, loc
     var params = {
       "id": $location.search().id
     };
-    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getPostDetails", params, httpOptions)
+    $http.post("https://api.karafeed.com/v1/feedgram/employee/getPostDetails", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.detail = data;
         $scope.updateStar(data.food.rateCount);

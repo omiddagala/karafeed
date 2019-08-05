@@ -62,7 +62,7 @@ module.controller('feedgramPostCtrl', function ($scope, $compile, $http, localSt
       "image": $scope.postImage === "/assets/img/defaults/default-food.png" ? null : $scope.imageToPost,
       "description": $scope.desc
     };
-    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/post", params, httpOptions)
+    $http.post("https://api.karafeed.com/v1/feedgram/employee/post", params, httpOptions)
       .success(function (data, status, headers, config) {
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();

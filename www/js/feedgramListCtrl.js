@@ -25,7 +25,7 @@ mymodule.controller('feedgramListCtrl', function ($scope, $compile, $http, local
         "sortBy": 'id'
       }
     };
-    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getPostList", params, httpOptions)
+    $http.post("https://api.karafeed.com/v1/feedgram/employee/getPostList", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.posts = data;
         stopLoading();

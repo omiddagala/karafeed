@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','toastr','ADM-dateTimePicker','ui.select'])
 
-  .run(function ($ionicPlatform,$location, $rootScope, localStorageService, $http, toastrConfig, toastr) {
+  .run(function ($ionicPlatform,$location, $rootScope, localStorageService, $http, toastrConfig, toastr, $ionicSideMenuDelegate) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs).
@@ -36,11 +36,11 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
 
     $rootScope.loadBalanceByRole = function () {
       if (jQuery.inArray("EMPLOYEE", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("http://127.0.0.1:9000/v1/employee/getBalance", true);
+        $rootScope.loadBalance("https://api.karafeed.com/v1/employee/getBalance", true);
       } else if (jQuery.inArray("COMPANY", $rootScope.roles) > -1 || jQuery.inArray("SILVER_COMPANY", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("http://127.0.0.1:9000/v1/company/getBalance");
+        $rootScope.loadBalance("https://api.karafeed.com/v1/company/getBalance");
       } else if (jQuery.inArray("RESTAURANT", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("http://127.0.0.1:9000/v1/restaurant/getLoginRestaurantBalance");
+        $rootScope.loadBalance("https://api.karafeed.com/v1/restaurant/getLoginRestaurantBalance");
       } else {
         $rootScope.userBalance = 0;
       }
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       var httpOptions = {
         headers: { 'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token }
       };
-      $http.post("http://127.0.0.1:9000/v1/general/getProfileImage", null, httpOptions)
+      $http.post("https://api.karafeed.com/v1/general/getProfileImage", null, httpOptions)
         .then(function (data, status, headers, config) {
           $rootScope.myProfilePic = data.data;
           // console.log(data);
@@ -136,7 +136,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
         "size": 5,
         "sortBy": "date"
       };
-      $http.post("http://127.0.0.1:9000/v1/message/getNewMessages", param, httpOptions)
+      $http.post("https://api.karafeed.com/v1/message/getNewMessages", param, httpOptions)
         .then(function (data, status, headers, config) {
           stopLoading();
           $rootScope.notifications = data.data;
@@ -188,7 +188,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
           serviceAddress: url,
           exceptionMessage: err.data.message.toString().length >= 255 ? err.data.message.toString().substring(0, 255) : err.data.message.toString()
         };
-        $http.post("http://127.0.0.1:9000/v1/log/insert", p, h)
+        $http.post("https://api.karafeed.com/v1/log/insert", p, h)
           .then(function (data, status, headers, config) {
           }).catch(function (err) {
         });
@@ -318,17 +318,21 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
     };
     $rootScope.$pageFinishedLoading = true;
 
-    $ionicPlatform.onHardwareBackButton(function() {
+    $ionicPlatform.registerBackButtonAction(function(event) {
       if ($rootScope.sortBoxIsShown) {
         $rootScope.sortBox();
-      } else if (window.location.hash === "#/emp-mobile-home") {
+      } else if (window.location.hash === "#/home") {
         navigator.app.exitApp();
       } else {
+        if ($rootScope.isMyMenuOpen()) {
+          $rootScope.customCloseMenu();
+        }
         navigator.app.backHistory();
       }
-    });
+    },100);
   })
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.scrolling.jsScrolling(false);
     $stateProvider.state('home', {
       cache: false,
       url: '/home',
@@ -446,7 +450,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       }
     }
   })
-  .controller('MainCtrl', function ($scope, $window, $ionicSideMenuDelegate, $ionicGesture, $rootScope, $ionicHistory) {
+  .controller('MainCtrl', function ($scope, $window, $ionicSideMenuDelegate, $ionicGesture, $rootScope) {
       ionic.Platform.ready(function () {
         // $ionicSideMenuDelegate.toggleLeft();
       });
@@ -504,6 +508,14 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       $scope.openMenu = function (e) {
         $(e.currentTarget).closest('ion-side-menus').find('ion-side-menu-content').removeClass('hidden-first');
         $(e.currentTarget).closest('ion-side-menus').find('fader').removeClass('hidden-first');
+      };
+      $rootScope.isMyMenuOpen = function () {
+        return !$("#ion-side-menu-content").hasClass("hidden-first");
+      };
+      $rootScope.customCloseMenu = function () {
+        $("#ion-side-menu-content").addClass("hidden-first");
+        $("#fader").addClass("hidden-first");
       }
+
   });
 

@@ -56,7 +56,6 @@
     <script src="lib/ionic/js/angular-toastr.tpls.min.js"></script>
     <script src="lib/ionic/js/toastrLibConfig.js"></script>
     <script src="lib/ionic/js/ui-bootstrap.min.js"></script>
-    <script type="text/javascript" src="myassets/js/smart-table.min.js"></script>
     <script src="myassets/js/ADM-dateTimePicker.min.js"></script>
     <script src="myassets/js/ScrollToPlugin.min.js"></script>
     <!--comments-->
@@ -108,7 +107,7 @@
 
       <ion-side-menus>
 
-        <fader class="hidden-first" ng-if="canRender('fader')"></fader>
+        <fader id="fader" class="hidden-first" ng-if="canRender('fader')"></fader>
 
         <ion-side-menu side="left" width="{{width()}}" can-drag-menu>
           <ion-header-bar ng-if="canRender('header')" class="flex content-between back-ebebeb">
@@ -170,14 +169,14 @@
               <!--<span class="color-808285 line-height-1"-->
                     <!--ng-class="currentMobileActiveMenu =='feedgram-profile'? 'mobile-menu-selected-text-f':'mobile-menu-unselected-text-f'">پروفایل</span>-->
             <!--</a>-->
-            <a ng-if="!showFeedgramTab()" ng-class="$rootScope.currentMobileActiveMenu == 'reserve' ? '':''"
+            <a ng-if="!showFeedgramTab()" menu-close ng-class="$rootScope.currentMobileActiveMenu == 'reserve' ? '':''"
                class="tab-item padding-md flex-imp flex-col items-center content-center fit-height-imp no-border"
                ng-click="mobileMenuClicked($event)" href="#/reserve">
               <img ng-src="{{currentMobileActiveMenu === 'reserve' ? '/assets/img/ui/mobile/tab-icons/reserve-s.svg' : '/assets/img/ui/mobile/tab-icons/reserve.svg'}}" width="45px" height="35px"/>
               <span class="color-808285 line-height-1"
                     ng-class="currentMobileActiveMenu == 'reserve' ? 'mobile-menu-selected-text':''">رزروها</span>
             </a>
-            <a ng-if="!showFeedgramTab()"
+            <a ng-if="!showFeedgramTab()" menu-close
                class="tab-item padding-md flex-imp flex-col items-center content-center fit-height-imp no-border"
                ng-click="mobileMenuClicked($event)" href="#/restaurant">
               <img ng-src="{{currentMobileActiveMenu === 'restaurant' ? '/assets/img/ui/mobile/tab-icons/restaurant-s.svg' : '/assets/img/ui/mobile/tab-icons/restaurant.svg'}}" width="45px" height="35px"/>
@@ -185,7 +184,7 @@
                     ng-class="currentMobileActiveMenu == 'restaurant' ? 'mobile-menu-selected-text':''">رستوران
                                 ها</span>
             </a>
-            <a ng-if="!showFeedgramTab()"
+            <a ng-if="!showFeedgramTab()" menu-close
                class="tab-item padding-md color-808285 flex-imp flex-col items-center content-center fit-height-imp no-border"
                ng-click="mobileMenuClicked($event)" href="#/home">
               <img ng-src="{{currentMobileActiveMenu === 'home' || currentMobileActiveMenu === 'category' ? '/assets/img/ui/mobile/tab-icons/home-s.svg' : '/assets/img/ui/mobile/tab-icons/home.svg'}}" width="45px" height="35px"/>
@@ -199,7 +198,7 @@
         </ion-side-menu>
 
         <!-- بخش منو -->
-        <ion-side-menu-content class="menu-content hidden-first" ng-if="canRender('menu')">
+        <ion-side-menu-content id="ion-side-menu-content" class="menu-content hidden-first" ng-if="canRender('menu')">
           <!--برای قسمت header -->
           <!-- <ion-header-bar class="bar-balanced">
               <h1 class="title title-right">
