@@ -67,6 +67,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
           data[i].totalAmount += data[i].deliveryPrice;
           newVal.restaurants.push(data[i]);
           newVal.dayDate = data[i].deliveryDate;
+          newVal.show = true;
           map.set(data[i].deliveryDate, newVal);
         }
       }
@@ -77,30 +78,27 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
       $rootScope.handleError(params, "/employee/getOrderList", err, httpOptions);
     });
   };
-  var delayTimer;
   $scope.search = function () {
-    clearTimeout(delayTimer);
-    delayTimer = setTimeout(function () {
-      startLoading();
+    setTimeout(function () {
       $.each($scope.mydays, function (index, day) {
+        day.show = false;
         $.each(day.restaurants, function (index, res) {
           res.show = false;
           if (res.restaurant.name.includes($scope.searchText)) {
             res.show = true;
+            day.show = true;
           } else {
             $.each(res.foodOrders, function (index, order) {
               if (order.food.name.includes($scope.searchText)) {
                 res.show = true;
+                day.show = true;
               }
             });
           }
         });
       });
       $scope.$apply();
-      setTimeout(function () {
-        stopLoading();
-      }, 1000);
-    }, 1000);
+    }, 100);
   };
   $scope.myFormatDate = function (d) {
     moment.locale('fa');

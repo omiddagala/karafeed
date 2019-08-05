@@ -14,7 +14,7 @@
 <!-- cardItem -->
 <div ng-init="orderList()" class="scroll-class1">
   <div class="article-mobile-list reserve-article">
-    <div ng-repeat="myday in mydays" id="d-{{$index}}" ng-class="$index === mydays.length - 1 ? 'bottom-margin-20' : ''">
+    <div ng-repeat="myday in mydays" ng-if="myday.show" id="d-{{$index}}" ng-class="$index === mydays.length - 1 ? 'bottom-margin-20' : ''">
       <div ng-class="$index !== 0 ? 'top-padding-20 bottom-padding-20 back-e2eded box-shadow-reserve-title' : ''" class="food_detail_title font-xxs color-939292 text-right pointer margin__top_30 w-95" style="margin: 0 auto;" ng-click="showTab($event)">
         <i class="icon ion-chevron-left color-319ab1 tab-arrow" ng-class="$index === 0 ? 'rotate' : ''"></i>
         <span class="color-7c7c7c text-right font-medium">{{getDayOfWeek(myFormatDate(myday.dayDate))}}،
