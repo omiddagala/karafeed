@@ -1,12 +1,5 @@
 <!-- search-bar -->
 <div class="bar bar-subheader stick-search-bar search-bar-box bar-assertive back-e1e1e1 no-border flex content-center items-center no-background-image auto-height items-center left-direction">
-  <button class="transparent-back fit-width no-border sort-btn" ng-click="sortBox($event)">
-    <svg xmlns="http://www.w3.org/2000/svg" class="unset-position full-height" viewBox="-10 -10 80 80" width="30"
-         height="30">
-      <path fill="#808285" fill-rule="evenodd"
-            d="M-.003 52.499c0 1.925 1.566 3.5 3.479 3.5h17.393v-7H3.476c-1.913 0-3.479 1.574-3.479 3.5zm0-42c0 1.925 1.566 3.5 3.479 3.5h31.307v-7H3.476c-1.913 0-3.479 1.575-3.479 3.5zm34.786 49v-3.5h24.351c1.913 0 3.479-1.575 3.479-3.5 0-1.926-1.566-3.5-3.479-3.5H34.783v-3.5c0-1.925-1.564-3.5-3.477-3.5-1.913 0-3.479 1.575-3.479 3.5v14c0 1.925 1.566 3.5 3.479 3.5s3.477-1.575 3.477-3.5zm-20.87-35v3.5H3.476c-1.913 0-3.479 1.575-3.479 3.501 0 1.924 1.566 3.499 3.479 3.499h10.437v3.5c0 1.925 1.565 3.5 3.477 3.5 1.914 0 3.479-1.575 3.479-3.5v-14c0-1.925-1.565-3.5-3.479-3.5-1.912 0-3.477 1.575-3.477 3.5zm48.7 7.001c0-1.926-1.566-3.501-3.479-3.501H27.827v7h31.307c1.913 0 3.479-1.575 3.479-3.499zM45.22 20.999c1.914 0 3.479-1.575 3.479-3.5v-3.5h10.435c1.913 0 3.479-1.575 3.479-3.5s-1.566-3.5-3.479-3.5H48.699v-3.5c0-1.925-1.565-3.5-3.479-3.5-1.913 0-3.479 1.575-3.479 3.5v14c0 1.925 1.566 3.5 3.479 3.5z"/>
-    </svg>
-  </button>
   <input type="text" ng-change="search()" id="searchText" name="searchText" ng-model="searchText"
          class="w-90 redius-lg left-padding-lg-imp right-padding-lg text-right"
          placeholder="جستجو با نام غذا یا رستوران">
@@ -59,7 +52,7 @@
                 <path fill="#1A4049" fill-rule="evenodd"
                       d="M29.513.307C13.225.307.026 13.669.026 30.149c0 16.48 13.199 29.842 29.487 29.842 16.281 0 29.481-13.362 29.481-29.842 0-16.48-13.2-29.842-29.481-29.842zm15.083 33.219h-30.16c-1.837 0-3.343-1.518-3.343-3.377 0-1.858 1.506-3.378 3.343-3.378h30.16c1.829 0 3.336 1.52 3.336 3.378 0 1.859-1.507 3.377-3.336 3.377z"/>
               </svg>
-              <span class="white-color candy-back white-color candy-back redius-xl reserve-item-count right-margin-sm left-margin-sm">{{food.count}}</span>
+              <span style="text-align: center" class="white-color candy-back white-color candy-back redius-xl reserve-item-count right-margin-sm left-margin-sm">{{food.count}}</span>
               <svg xmlns="http://www.w3.org/2000/svg" ng-click="productPlus(food, myday.dayDate)"
                    class="unset-position"
                    viewbox="0 -15 60 90" width="20" height="30">

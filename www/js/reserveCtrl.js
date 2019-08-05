@@ -9,7 +9,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
   $rootScope.pageTitle = 'رزروها';
   $scope.reserves = {};
   $rootScope.currentMobileActiveMenu = "reserve";
-  $ionicModal.fromTemplateUrl('app/pages/employee/reserve/dda-modal.html', {
+  $ionicModal.fromTemplateUrl('../views/employee/reserve/dda-modal.html', {
     scope: $scope,
     animation: 'slide-in-up',
   }).then(function (modal) {
@@ -298,7 +298,7 @@ mymodule.controller('reserveCtrl', function ($scope, $compile, $http, localStora
   };
 
   $scope.showSubmit = function (e) {
-    $(e.currentTarget).closest('form').find('button[type="submit"]').show();
+    $(e.currentTarget).closest('form').find('button[type="submit"]').removeClass("hidden-btn");
     $(e.currentTarget).addClass('comment-box-focused');
   }
 });

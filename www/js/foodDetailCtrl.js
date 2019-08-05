@@ -7,35 +7,24 @@ try {
 
 mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageService, $parse, $rootScope, toastrConfig, toastr) {
   $rootScope.pageTitle = 'جزئیات غذا';
+  // console.log($rootScope.mobileFoodDetail);
   $('.hidden-tab').hide();
-
-  $scope.initCtrl = function () {
-    setTimeout(function () {
-      var token = localStorageService.get("my_access_token");
-      var httpOptions = {
-        headers: {'Content-type': 'text/plain; charset=utf-8', 'Authorization': 'Bearer ' + token}
-      };
-      $http.post("http://127.0.0.1:9000/v1/foodSearch/findOne", $location.search().id, httpOptions)
-        .success(function (data, status, headers, config) {
-          stopLoading();
-          $scope.mobileFoodDetail = data;
-          $scope.dateToShowOnCards = $location.search().d;
-          $scope.timeToShowOnCards = $location.search().t;
-        }).catch(function (err) {
-        $rootScope.handleError($location.search().id, "foodSearch/findOne", err, httpOptions);
-      });
-      $scope.loadYourLastRateToThisFood();
-      $scope.foodDetail();
-    }, 700)
-  };
-
+  if (!$rootScope.mobileFoodDetail) {
+    window.location.assign('/#category');
+    //     var home = window.location.href.replace("detail", "home");
+    //     home = replaceUrlParam(home, "r", name);
+    //     window.location.href = home;
+    //     $rootScope.currentActiveMenu = "home";
+    //     return;
+  }
   $scope.loadYourLastRateToThisFood = function () {
+
     var token = localStorageService.get("my_access_token");
     var httpOptions = {
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $location.search().id
+      id: $rootScope.mobileFoodDetail.id
     };
     $http.post("http://127.0.0.1:9000/v1/employee/lastRate", params, httpOptions)
       .success(function (data, status, headers, config) {
@@ -44,6 +33,8 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       }).catch(function (err) {
       $rootScope.handleError(params, "/employee/lastRate", err, httpOptions);
     });
+
+
   };
 
   $scope.myRate = function (rate) {
@@ -54,7 +45,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      "foodId": $location.search().id,
+      "foodId": $rootScope.mobileFoodDetail.id,
       "rate": rate
     };
     $http.post("http://127.0.0.1:9000/v1/employee/rate", params, httpOptions)
@@ -92,7 +83,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $location.search().id
+      id: $rootScope.mobileFoodDetail.id
     };
     $http.post("http://127.0.0.1:9000/v1/food/getFoodAvailableDates", params, httpOptions)
       .success(function (data, status, headers, config) {
@@ -110,6 +101,10 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       $rootScope.handleError(params, "/food/getFoodAvailableDates", err, httpOptions);
     });
   };
+  if ($rootScope.mobileFoodDetail && $rootScope.mobileFoodDetail.id) {
+    $scope.loadYourLastRateToThisFood();
+    $scope.foodDetail();
+  }
   $scope.formatMyTime = function (d) {
     var rt;
     switch (d.toString().length) {
@@ -148,7 +143,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      foodId: $location.search().id,
+      foodId: $rootScope.mobileFoodDetail.id,
       comment: $('#commentInDetail').val()
     };
     $http.post("http://127.0.0.1:9000/v1/foodComment/add", params, httpOptions)
@@ -173,7 +168,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $location.search().id,
+      id: $rootScope.mobileFoodDetail.id,
       pageableDTO: {
         page: $scope.commentPageNum,
         size: 10,
@@ -212,7 +207,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
       headers: {'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token}
     };
     var params = {
-      id: $location.search().id
+      id: $rootScope.mobileFoodDetail.id
     };
     $http.post("http://127.0.0.1:9000/v1/employee/lastRate", params, httpOptions)
       .success(function (data, status, headers, config) {
@@ -230,7 +225,7 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
     };
     var params = {
       date: $rootScope.dateToOrder.format('YYYY-MM-DDTHH:mmZ'),
-      foodId: $location.search().id
+      foodId: $rootScope.mobileFoodDetail.id
     };
     $http.post("http://127.0.0.1:9000/v1/employee/order", params, httpOptions)
       .success(function (data, status, headers, config) {
@@ -238,6 +233,9 @@ mymodule.controller('foodDetailCtrl', function ($scope, $http, localStorageServi
         showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
         stopLoading();
       }).catch(function (err) {
+      setTimeout(function () {
+        $scope.loadOrders();
+      }, 2000);
       $rootScope.handleError(params, "/employee/order", err, httpOptions);
     });
   };
