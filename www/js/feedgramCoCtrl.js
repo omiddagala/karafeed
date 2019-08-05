@@ -34,7 +34,7 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
         "sortBy": 'id'
       }
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/getCompanyEmployeeList", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getCompanyEmployeeList", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.colleagues = data;
         stopLoading();
@@ -53,7 +53,7 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
     var params = {
       "id": id
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/followPage", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/followPage", params, httpOptions)
       .success(function (data, status, headers, config) {
         stopLoading();
       }).catch(function (err) {
@@ -78,7 +78,7 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
         "sortBy": 'id'
       }
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/getFollowerList", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getFollowerList", params, httpOptions)
       .success(function (data, status, headers, config) {
         for (var i = 0; i < data.length; i++) {
           $scope.colleagues.push(data[i].follower);
@@ -106,7 +106,7 @@ mymodule.controller('feedgramCoCtrl', function ($scope, $compile, $http, localSt
         "sortBy": 'id'
       }
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/getFollowingList", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getFollowingList", params, httpOptions)
       .success(function (data, status, headers, config) {
         for (var i = 0; i < data.length; i++) {
           $scope.colleagues.push(data[i].following);

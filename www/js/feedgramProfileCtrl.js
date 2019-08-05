@@ -28,7 +28,7 @@ mymodule.controller('feedgramProfileCtrl', function ($scope, $compile, $http, lo
     var params = {
       "id": null
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/getPageInfo", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/getPageInfo", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.info = data;
         stopLoading();
@@ -46,7 +46,7 @@ mymodule.controller('feedgramProfileCtrl', function ($scope, $compile, $http, lo
     var params = {
       "value": $("#desc").val()
     };
-    $http.post("https://api.karafeed.com/v1/feedgram/employee/editPageInfo", params, httpOptions)
+    $http.post("http://127.0.0.1:9000/v1/feedgram/employee/editPageInfo", params, httpOptions)
       .success(function (data, status, headers, config) {
         $scope.editModal.hide();
         $scope.info.description = params.value;

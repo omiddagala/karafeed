@@ -58,7 +58,7 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                 };
 
             }
-            $http.post("https://api.karafeed.com/v1/employee/findRestaurantByName", params, httpOptions)
+            $http.post("http://127.0.0.1:9000/v1/employee/findRestaurantByName", params, httpOptions)
                 .success(function (data, status, headers, config) {
                     stopLoading();
                     if (data.list.length > 0) {
@@ -144,7 +144,7 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                 id: $scope.selectedRest.id,
                 comment: $('#commentInDetail').val()
             };
-            $http.post("https://api.karafeed.com/v1/restaurantComment/add", params, httpOptions)
+            $http.post("http://127.0.0.1:9000/v1/restaurantComment/add", params, httpOptions)
                 .success(function (data, status, headers, config) {
                     showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
                     stopLoading();
@@ -179,7 +179,7 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                     sortBy: "date"
                 }
             };
-            $http.post("https://api.karafeed.com/v1/restaurantComment/getFoodComments", params, httpOptions)
+            $http.post("http://127.0.0.1:9000/v1/restaurantComment/getFoodComments", params, httpOptions)
                 .success(function (data, status, headers, config) {
                     if (data.length > 0) {
                         Array.prototype.push.apply($scope.comments, data);
@@ -228,7 +228,7 @@ mymodule.controller('restaurantCtrl',function ($scope, $compile, $http, localSto
                 "restaurantId": $scope.selectedRest.id,
                 "rate": rate
             };
-            $http.post("https://api.karafeed.com/v1/employee/rateRestaurant", params, httpOptions)
+            $http.post("http://127.0.0.1:9000/v1/employee/rateRestaurant", params, httpOptions)
                 .success(function (data, status, headers, config) {
                     showMessage(toastrConfig, toastr, "پیام", "عملیات با موفقیت انجام شد", "success");
                     stopLoading();

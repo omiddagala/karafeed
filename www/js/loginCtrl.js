@@ -26,7 +26,7 @@ mymodule.controller('loginCtrl', function ($scope, $http, localStorageService, $
       showMessage(toastrConfig, toastr, "خطا", "لطفا در فیلد نام کاربری از کاراکترهای مجاز استفاده کنید", "error");
       return;
     }
-    $http.post("https://api.karafeed.com/oauth/token", jQuery.param(params), httpOptions)
+    $http.post("http://127.0.0.1:9000/oauth/token", jQuery.param(params), httpOptions)
       .success(function (data, status, headers, config) {
         stopLoading();
         var jwt = parseJwt(data.access_token);

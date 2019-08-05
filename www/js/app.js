@@ -36,11 +36,11 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
 
     $rootScope.loadBalanceByRole = function () {
       if (jQuery.inArray("EMPLOYEE", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://api.karafeed.com/v1/employee/getBalance", true);
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/employee/getBalance", true);
       } else if (jQuery.inArray("COMPANY", $rootScope.roles) > -1 || jQuery.inArray("SILVER_COMPANY", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://api.karafeed.com/v1/company/getBalance");
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/company/getBalance");
       } else if (jQuery.inArray("RESTAURANT", $rootScope.roles) > -1) {
-        $rootScope.loadBalance("https://api.karafeed.com/v1/restaurant/getLoginRestaurantBalance");
+        $rootScope.loadBalance("http://127.0.0.1:9000/v1/restaurant/getLoginRestaurantBalance");
       } else {
         $rootScope.userBalance = 0;
       }
@@ -73,7 +73,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       var httpOptions = {
         headers: { 'Content-type': 'application/json; charset=utf-8', 'Authorization': 'Bearer ' + token }
       };
-      $http.post("https://api.karafeed.com/v1/general/getProfileImage", null, httpOptions)
+      $http.post("http://127.0.0.1:9000/v1/general/getProfileImage", null, httpOptions)
         .then(function (data, status, headers, config) {
           $rootScope.myProfilePic = data.data;
           // console.log(data);
@@ -136,7 +136,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
         "size": 5,
         "sortBy": "date"
       };
-      $http.post("https://api.karafeed.com/v1/message/getNewMessages", param, httpOptions)
+      $http.post("http://127.0.0.1:9000/v1/message/getNewMessages", param, httpOptions)
         .then(function (data, status, headers, config) {
           stopLoading();
           $rootScope.notifications = data.data;
@@ -188,7 +188,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
           serviceAddress: url,
           exceptionMessage: err.data.message.toString().length >= 255 ? err.data.message.toString().substring(0, 255) : err.data.message.toString()
         };
-        $http.post("https://api.karafeed.com/v1/log/insert", p, h)
+        $http.post("http://127.0.0.1:9000/v1/log/insert", p, h)
           .then(function (data, status, headers, config) {
           }).catch(function (err) {
         });
