@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','toastr','ADM-dateTimePicker','ui.select'])
 
-  .run(function ($ionicPlatform,$location, $rootScope, localStorageService, $http, toastrConfig, toastr, $ionicSideMenuDelegate) {
+  .run(function ($ionicPlatform,$location, $rootScope, localStorageService, $http, toastrConfig, toastr, $ionicModal) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs).
@@ -16,6 +16,10 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       if (window.cordova && window.Keyboard) {
         window.Keyboard.hideKeyboardAccessoryBar(true);
       }
+
+      document.addEventListener("resume", function (evt) {
+        $rootScope.loadBalanceByRole()
+      }, false);
 
       if (window.StatusBar) {
         // Set the statusbar to use the default style, tweak this to
@@ -114,7 +118,18 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
 
     //vahid seraj updated code (1397/10/05)
     $rootScope.chargeAccount = function () { // باز کردن مودال برای افزودن اعتبار کاربران
-      $rootScope.openModal('app/pages/charge-account/charge-account.html', 'md');
+      $rootScope.customCloseMenu();
+      $ionicModal.fromTemplateUrl('../views/charge-account/charge-account.html', {
+        scope: $rootScope,
+        animation: 'slide-in-up'
+      }).then(function (modal) {
+        $rootScope.chargeModal = modal;
+        $rootScope.chargeModal.show();
+      });
+    };
+    $rootScope.showPaymentPageInBrowser = function () {
+      window.open("https://portal.karafeed.com/#/charge-account?amount=" + $("#charge-amount").val().replace(/,/g, '') + "&tok=" + localStorageService.get("my_access_token"), '_blank', 'location=yes');
+      return false;
     };
     $rootScope.notifications = {
       count: 0
@@ -450,7 +465,27 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       }
     }
   })
-  .controller('MainCtrl', function ($scope, $window, $ionicSideMenuDelegate, $ionicGesture, $rootScope) {
+  .directive('commaseparator', function($filter) {
+    'use strict';
+    return {
+      require: 'ngModel',
+      link: function(scope, elem, attrs, ctrl) {
+        if (!ctrl) {
+          return;
+        }
+        ctrl.$formatters.unshift(function() {
+          return $filter('number')(ctrl.$modelValue);
+        });
+        ctrl.$parsers.unshift(function(viewValue) {
+          var plainNumber = viewValue.replace(/[\,\.\-\+]/g, ''),
+            b = $filter('number')(plainNumber);
+          elem.val(b);
+          return plainNumber;
+        });
+      }
+    };
+  })
+  .controller('MainCtrl', function ($scope, $window, $ionicSideMenuDelegate, $ionicGesture, $rootScope, localStorageService) {
       ionic.Platform.ready(function () {
         // $ionicSideMenuDelegate.toggleLeft();
       });
@@ -515,7 +550,7 @@ angular.module('starter', ['ionic','starter.controllers','LocalStorageModule','t
       $rootScope.customCloseMenu = function () {
         $("#ion-side-menu-content").addClass("hidden-first");
         $("#fader").addClass("hidden-first");
-      }
+      };
 
   });
 

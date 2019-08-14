@@ -1,0 +1,50 @@
+<ion-modal-view>
+  <ion-content>
+    <div style="background: red;height: 45px">
+      <button type="button" class="close newmodal_close" ng-click="ddaModal.hide()" aria-label="Close">
+        <img src="/assets/img/ui/close.png">
+      </button>
+      <img src="/assets/img/ui/small-logo.png" class="newmodal_small_logo">
+    </div>
+    <div style="padding: 10px"
+         class="w-100 flex items-center content-between color-319ab1 font-bold">
+      <div style="margin-left: 0" class="row flex items-center bottom-margin-lg form_input_margin">
+        <div class="col-sm-8 col-xs-12">
+          <input type="text" class="confirm_input form-control" name="amount" ng-model="amount" commaseparator placeholder="مبلغ به ریال"
+                 required id="charge-amount" style="text-align:right;color: white">
+        </div>
+        <label for="charge-amount" class="col-sm-4 col-xs-12 control-label">مبلغ مورد نظر(ریال)</label>
+      </div>
+    </div>
+    <div>
+      <div style="text-align: center" class="col-sm-8 text-left no-padding">
+        <button type="button" ng-click="showPaymentPageInBrowser()" class="confirm_button confirm_yes btn">تایید
+          و نمایش</button>
+      </div>
+      <div class="remove-float"></div>
+    </div>
+  </ion-content>
+</ion-modal-view>
+
+<style>
+  .modal-open .modal{
+    height: 40% !important;
+    min-height: 40% !important;
+    width: 80% !important;
+    min-width: 80% !important;
+    position: absolute;
+    bottom: 30% !important;
+    left: 10% !important;
+    top: unset;
+  }
+  .modal-backdrop{
+    background-color: transparent;
+  }
+  .modal{
+    top: unset !important;
+    min-height: 40% !important;
+    width: 80% !important;
+    bottom: 30% !important;
+    left: 10% !important;
+  }
+</style>
