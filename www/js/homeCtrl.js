@@ -96,6 +96,17 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
             sortBy: $rootScope.sortOrder
           }
         };
+        if (isSearch) {
+          $location.search('d', datetime);
+          $location.search('n', params.foodName);
+          $location.search('r', params.restaurantName);
+          $location.search('s', params.startPrice);
+          $location.search('e', params.endPrice);
+          $location.search('t', params.foodType);
+          $location.search('ti', time);
+          $location.search('so', $rootScope.sortOrder);
+          $location.search('jo', off.toString());
+        }
       }
       $http.post("http://127.0.0.1:9000/v1/foodSearch/find", params, httpOptions)
         .success(function (data, status, headers, config) {
