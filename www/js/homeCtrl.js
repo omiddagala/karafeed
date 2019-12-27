@@ -32,6 +32,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         }
         $rootScope.foods = [];
       }
+      $('#ion-content').unbind('scroll');
     });
 
     $scope.loadContent = function (isFirstCall, isSearch) {
