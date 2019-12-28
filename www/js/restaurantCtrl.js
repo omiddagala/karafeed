@@ -9,7 +9,7 @@ mymodule.controller('restaurantCtrl', function ($scope, $compile, $http, localSt
   $rootScope.pageTitle = 'رستوران';
   $rootScope.currentMobileActiveMenu = "restaurant";
 
-  $scope.$on('$locationChangeStart', function () {
+  $scope.$on('$stateChangeStart', function () {
     if ($rootScope.currentActiveMenu !== "restaurant") {
       if ($rootScope.currentActiveMenu === "home") {
         var a = location.href;
@@ -18,7 +18,7 @@ mymodule.controller('restaurantCtrl', function ($scope, $compile, $http, localSt
         $rootScope.employee_params = null;
       }
     }
-    $('#ion-content').unbind('scroll');
+    $('ion-content').unbind('scroll');
   });
 
   $scope.loadContent = function (isFirstCall, isSearch) {
@@ -92,8 +92,8 @@ mymodule.controller('restaurantCtrl', function ($scope, $compile, $http, localSt
     setTimeout(function () {
       $scope.rests = [];
       $scope.loadContent(true, false);
-      $('#ion-content').scroll(function () {
-        if (window.location.hash === "#/restaurant" && !$rootScope.sortBoxIsShown && $rootScope.scrollIsAtEnd($('#ion-content'))) {
+      $('ion-content').scroll(function () {
+        if (window.location.hash.indexOf("#/restaurant") >=0 && !$rootScope.sortBoxIsShown && $rootScope.scrollIsAtEnd($('ion-content'))) {
           if ($rootScope.resEnableScroll) {
             $rootScope.resEnableScroll = false;
             $scope.loadContent(false, false);

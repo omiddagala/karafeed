@@ -22,7 +22,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
     $scope.headerImgSrc = $scope.headerImg !== '' ? '../../../../assets/img/ui/mobile/' + $scope.headerImg + '.png' : '';
     $rootScope.mobileFoodDetail = {};
 
-    $scope.$on('$locationChangeStart', function () {
+    $scope.$on('$stateChangeStart', function () {
       if ($rootScope.currentActiveMenu !== "home") {
         if ($rootScope.currentActiveMenu === "restaurant") {
           var a = location.href;
@@ -32,7 +32,7 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         }
         $rootScope.foods = [];
       }
-      $('#ion-content').unbind('scroll');
+      $('ion-content').unbind('scroll');
     });
 
     $scope.loadContent = function (isFirstCall, isSearch) {
@@ -145,8 +145,8 @@ mymodule.controller('homeCtrl', function ($scope, $compile, $http, localStorageS
         initClock();
         $scope.loadContent(true, false);
         $scope.loadOrders();
-        $('#ion-content').scroll(function () {
-          if (window.location.hash === "#/home" && !$rootScope.sortBoxIsShown && $rootScope.scrollIsAtEnd($('#ion-content'))) {
+        $('ion-content').scroll(function () {
+          if (window.location.hash.indexOf("#/home") >= 0 && !$rootScope.sortBoxIsShown && $rootScope.scrollIsAtEnd($('ion-content'))) {
             if ($rootScope.enableScroll && $rootScope.isMainFood) {
               $rootScope.enableScroll = false;
               $scope.loadContent(false, true)
